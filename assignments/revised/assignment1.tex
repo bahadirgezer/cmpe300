@@ -1,0 +1,244 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+
+\title{
+\vspace{-1cm} 
+\Huge Assignment 1\\
+\LARGE CMPE 300, Analysis of Algorithms, Fall 2022
+}
+\author{Bahadır Gezer - 2020400039}
+\date{November 2022}
+
+\begin{document}
+
+\maketitle
+
+\section*{Answer 1}
+\subsection*{A.}
+
+\iffalse
+Evaluate the upper bound limit when $n > n_{0}$ for some $c_{2}, n_{0} > 0$ \\
+\begin{align*}
+\lim _{n \to \infty } n^{4}log(n^{8}n!) + 4n^{3} &\le \lim _{n \to \infty } c_{2}n^{5}log n && \text{Upper bound limit} \\
+\lim _{n \to \infty } \frac{n^{4}log(n^{8}n!) + 4n^{3}} {n^{5}log n} &\le \lim _{n \to \infty } c_{2} && \text{Sum rule \& evaluate limit} \\ 
+\lim _{n \to \infty } \frac{n^{4}log(n^{8}n!)} {n^{5}log n} + \lim _{n \to \infty } \frac{4n^{3}} {n^{5}log n} &\le c_{2} && \text{Simplify $n$'s} \\
+\lim _{n \to \infty } \frac{log(n^{8}n!)} {n log n} + \lim _{n \to \infty } \frac{4} {n^{2}log n} &\le c_{2} && \text{Evaluate limit} \\
+\lim _{n \to \infty } \frac{log(n^{8}n!)} {n log n} + 0 &\le c_{2} && \text{Stirling's formula} \\
+\lim _{n \to \infty }\frac{log\left( n^{8}\sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}\right)} {n log n} &\le c_{2} && \text{L'Hôpital's rule} \\
+\lim _{n \to \infty }\frac{log n + \frac{17}{2n}} {log n + 1} &\le c_{2} && \text{L'Hôpital's rule} \\
+\lim _{n \to \infty } \frac{\frac{1}{n} - \frac{17}{2n^{2}}} {\frac{1}{n}} &\le c_{2} && \text{Multiply by $\frac{n}{n}$} \\
+\lim _{n \to \infty } \left(1 - \frac{17}{2n}\right) &\le c_{2} && \text{Sum rule} \\
+\lim _{n \to \infty } 1 - \lim _{n \to \infty } \frac{17}{2n} &\le c_{2} && \text{Evaluate limit} \\
+1 - \lim _{n \to \infty } \frac{17}{2n} &\le c_{2} && \text{Evaluate limit} \\
+1 - 0 &\le c_{2} && \text{} \\
+1 &\le c_{2} && \text{} 
+\end{align*}
+\fi
+
+$c_{1}$ and $c_{2}$ is chosen where $c_{1}, c_{2} > 0$ for some $n > n_{0}$. So $n \to \infty$. Definition of $\Theta$ is used. 
+\[\setlength\arraycolsep{2pt}\def\arraystretch{2}
+    \begin{array}{rccclcl}
+&& \displaystyle f(n) \in \Theta(n^{5}log(n)) && &-& \text{Equality of $f(n)$} \\ [-2ex]
+&& \displaystyle n^{4}log(n^{8}n!) + 4n^{3} \in \Theta(n^{5}log(n)) && &-& \text{Definition of $\Theta$} \\ [-1ex]
+\displaystyle \lim _{n \to \infty } c_{1}n^{5}log n &\le& \displaystyle \lim _{n \to \infty } (n^{4}log(n^{8}n!) + 4n^{3}) &\le& \displaystyle\lim _{n \to \infty } c_{2}n^{5}log n &-& \text{Divide by $n^{5}log n$} \\ [1ex]
+\displaystyle \lim _{n \to \infty } c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{n^{4}log(n^{8}n!) + 4n^{3}} {n^{5}log n} &\le& \displaystyle \lim _{n \to \infty } c_{2} &-& \text{Sum law \& evaluate limit} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{n^{4}log(n^{8}n!)} {n^{5}log n} + \lim _{n \to \infty }\frac{4n^{3}} {n^{5}log n} &\le& c_{2} &-& \text{Simplify $n$'s} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{log(n^{8}n!)} {n log n} + \lim _{n \to \infty }\frac{4} {n^{2}log n} &\le& c_{2} &-& \text{Evaluate limit} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{log(n^{8}n!)} {n log n} + 0 &\le& c_{2} &-& \text{Stirling's formula}\\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{log\left( n^{8}\sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}\right)} {n log n} &\le& c_{2} &-& \text{L'Hôpital's rule} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty }\frac{log n + \frac{17}{2n}} {log n + 1} &\le& c_{2} &-& \text{L'Hôpital's rule} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty } \frac{\frac{1}{n} - \frac{17}{2n^{2}}} {\frac{1}{n}} &\le& c_{2} &-& \text{Multiply by $\frac{n}{n}$} \\ [2ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty } \left(1 - \frac{17}{2n}\right) &\le& c_{2} &-& \text{Sum rule} \\ [1ex]
+\displaystyle c_{1} &\le& \displaystyle \lim _{n \to \infty } 1 - \displaystyle \lim _{n \to \infty } \frac{17}{2n} &\le& c_{2} &-& \text{Evaluate limit} \\ [1ex]
+\displaystyle c_{1} &\le& 1 - \displaystyle \lim _{n \to \infty } \displaystyle \frac{17}{2n} &\le& c_{2} &-& \text{Evaluate limit} \\ [-0.5ex]
+\displaystyle c_{1} &\le& 1 - 0 &\le& c_{2} && \text{} \\ [-2ex]
+\displaystyle c_{1} &\le& 1 &\le& c_{2} && \text{} 
+    \end{array}
+\] 
+Real values for $c_{1}$  and $c_{2}$ can be chosen from the resulting constraints. Case A is true. 
+\par\noindent\rule{\textwidth}{0.7pt}
+
+\subsection*{B.}
+
+$c$ is chosen where $c > 0$ for some $n > n_{0}$. So $n \to \infty$. Definition of $\Omega$ is used. 
+\begingroup
+\allowdisplaybreaks
+\addtolength{\jot}{0.5em}
+\begin{align*}
+f(n) &\in \Omega(n^{5}\sqrt{n}) &-& \text{Equality of } f(n) \\
+n^{4}log(n^{8}n!) + 4n^{3} &\in \Omega(n^{5}\sqrt{n}) &-& \text{Definition of } \Omega \\
+\lim _{n \to \infty } c n^{5}\sqrt{n} &\le \lim _{n \to \infty } n^{4}log(n^{8}n!) + 4n^{3} &-& \text{Divide by } n^{5}\sqrt{n} \\
+\lim _{n \to \infty } c &\le \lim _{n \to \infty } \frac{n^{4}log(n^{8}n!) + 4n^{3}}{n^{5}\sqrt{n}} &-& \text{Sum rule \& evaluate limit} \\
+c &\le \lim _{n \to \infty } \frac{n^{4}log(n^{8}n!)} {n^{5}\sqrt{n}} + \lim _{n \to \infty } \frac{4n^{3}} {n^{5}\sqrt{n}} &-& \text{Simplify } n \text{'s} \\
+c &\le \lim _{n \to \infty } \frac{log(n^{8}n!)} {n\sqrt{n}} + \lim _{n \to \infty } \frac{4} {n^{2}\sqrt{n}} &-& \text{Evaluate limit} \\
+c &\le \lim _{n \to \infty } \frac{log(n^{8}n!)} {n\sqrt{n}} + 0 &-& \text{Stirling's formula} \\
+c &\le \lim _{n \to \infty } \frac{log\left( n^{8}\sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}\right)} {n\sqrt{n}} &-& \text{L'Hôpital's rule} \\
+c &\le \lim _{n \to \infty } \frac {log n + \frac{17}{2n}} {\frac{3\sqrt{n}} {2}} &-& \text{L'Hôpital's rule} \\
+c &\le \lim _{n \to \infty } \frac{\frac{1} {n} - \frac{17}{2n^{2}}} {\frac{3} {4\sqrt{n}} } &-& \text{Sum rule \& simplify } n \text{'s} \\
+c &\le \lim _{n \to \infty } \frac{4} {3\sqrt{n}}  - \lim _{n \to \infty } \frac{34} {3 n^{3/2}} &-& \text{Evaluate limit} \\
+c &\le \lim _{n \to \infty } \frac{4} {3\sqrt{n}}  - 0 &-& \text{Evaluate limit} \\
+c &\le 0 && \text{} \\
+\end{align*}
+\endgroup
+Real values of $c$ cannot be chosen from the resulting constraints. Case B is false. \\ 
+\par\noindent\rule{\textwidth}{0.7pt}
+
+\subsection*{C.} 
+
+$c$ is chosen where $c > 0$ for some $n > n_{0}$. So $n \to \infty$. Definition of $\omega$ is used. 
+\begingroup
+\allowdisplaybreaks
+\addtolength{\jot}{0.5em}
+\begin{align*}
+f(n) &\in \omega(n^{4}) &-& \text{Equality of } f(n) \\
+n^{4}log(n^{8}n!) + 4n^{3} &\in \omega(n^{4}) &-& \text{Definition of } \omega \\
+\lim _{n \to \infty } c n^{4} &\le \lim _{n \to \infty } n^{4}log(n^{8}n!) + 4n^{3} &-& \text{Divide by } n^{4} \\
+\lim _{n \to \infty } c &\le \lim _{n \to \infty } \frac{n^{4}log(n^{8}n!) + 4n^{3}} {n^{4}} &-& \text{Sum rule} \\
+c &\le \lim _{n \to \infty } \frac{n^{4}log(n^{8}n!)} {n^{4}} + \lim _{n \to \infty } \frac{4n^{3}} {n^{4}} &-& \text{Simplify } n \text{'s} \\
+c &\le \lim _{n \to \infty } log(n^{8}n!) + \lim _{n \to \infty } \frac{4} {n} &-& \text{Evaluate limit} \\
+c &\le \lim _{n \to \infty } log(n^{8}n!) + 0 &-& \text{Stirling's formula} \\
+c &\le \lim _{n \to \infty } log\left( n^{8}\sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}\right) &-& \text{Product rule} \\
+c &\le \lim _{n \to \infty } log\left( n^{8}\sqrt{2\pi n}\right) + \lim _{n \to \infty } log\left(\left(\frac{n}{e}\right)^{n}\right) &-& \lim _{n \to \infty} \frac{n}{e} = \infty \text{, so } \lim _{n \to \infty} \infty^n = \infty \\
+c &\le \lim _{n \to \infty } log\left( n^{8}\sqrt{2\pi n}\right) + \infty &-& \text{Evaluate limit} \\
+c &\le \infty + \infty && \\
+c &\le \infty && \\
+\end{align*}
+\endgroup
+Real values of $c$ can be chosen from the resulting constraints. Case C is true. \\
+\par\noindent\rule{\textwidth}{0.7pt}
+
+\subsection*{D.}
+
+$c$ is chosen where $c > 0$ for some $n > n_{0}$. So $n \to \infty$. Definition of $\mathcal{O}$ is used. 
+\begingroup
+\allowdisplaybreaks
+\addtolength{\jot}{0.5em}
+\begin{align*}
+f(n) &\in \mathcal{O}(n^{4}log n) &-& \text{Equality of } f(n) \\
+n^{4}log(n^{8}n!) + 4n^{3} &\in \mathcal{O}(n^{4}log n) &-& \text{Definition of } \mathcal{O} \\
+\lim _{n \to \infty } n^{4}log(n^{8}n!) + 4n^{3} &\le \lim _{n \to \infty } c n^{4}log n &-& \text{Divide by } n^{4}log n \\
+\lim _{n \to \infty } \frac{n^{4}log(n^{8}n!) + 4n^{3}} {n^{4}log n} &\le \lim _{n \to \infty } c &-& \text{Sum rule} \\
+\lim _{n \to \infty } \frac{n^{4}log(n^{8}n!)} {n^{4}log n} + \lim _{n \to \infty } \frac{4n^{3}} {n^{4}log n} &\le c &-& \text{Simplify } n \text{'s} \\
+\lim _{n \to \infty } \frac{log(n^{8}n!)} {log n} + \lim _{n \to \infty } \frac{4} {n log n} &\le c &-& \text{Evaluate limit} \\
+\lim _{n \to \infty } \frac{log(n^{8}n!)} {log n} + 0 &\le c &-& \text{Stirling's formula} \\
+\lim _{n \to \infty } \frac{log\left( n^{8}\sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}\right)} {log n} &\le c &-& \text{L'Hôpital's rule} \\
+\lim _{n \to \infty } \frac{log n + \frac{17}{2n}} {\frac{1} {n}} &\le c &-& \text{Rearrange } 1/n \\
+\lim _{n \to \infty } n log n + \frac{17}{2} &\le c &-& \text{Evaluate limit} \\
+\infty &\le c && 
+\end{align*}
+\endgroup
+Real values of $c$ cannot be chosen from the resulting constraints. Case D is false. \\
+
+\newpage
+\section*{Answer 2}
+
+\begin{quote}
+\begin{algorithmic}[1]
+\Require n is a positive odd integer
+\Require k is a uniformly distributed random integer between 1 and n
+\State $\textbf{function }anonymous(k,n)$
+\State $x \gets 1$
+\State $arr \gets initialize\_random\_array(n)$ 
+\If{$k = \lceil n/2 \rceil$}
+    \For{$i \gets 0 \textbf{ to } n-1$}
+        \State find\_all\_subsets(arr)
+    \EndFor
+\ElsIf{$k < n/2$}
+    \For{$j \gets 0 \textbf{ to } n-1$}
+        \For{$k \gets n-1 \textbf{ to } 1 \textbf{ by } k = k/2$}
+            \State $x \gets x * 2$
+        \EndFor
+    \EndFor 
+\Else
+    \For{$i \gets 0 \textbf{ to } n-1$}
+        \State $x \gets x + 1$
+    \EndFor
+\EndIf 
+\State $\textbf{end}$
+\end{algorithmic}
+\end{quote}
+
+\begin{description}
+   \item[for loop 1 - line 5:] This loop will iterate \textbf{from} $\mathbf{0}$ \textbf{to} $\mathbf{n-1}$, which is $\mathbf{n}$ iterations. Each iteration will call $\mathbf{find\_all\_subsets(arr)}$. $\mathbf{find\_all\_subsets}$ finds all subsets of the array $\mathbf{arr}$, and each subset counts as one basic operation. To make analysis simpler, elements in $\mathbf{arr}$ is assumed to be unique, this effectively makes $\mathbf{arr}$ a mathematical set. The number of subsets for a set is $\mathbf{2^{y}}$ where $\mathbf{y}$ is the size of the set. Thus, each iteration of the loop will have $\mathbf{2^{n}}$ basic operations. So the complexity comes out to be $\mathbf{f_{5-7}(n,k) = n \cdot 2^{n}}$
+   
+   \item[for loop 2 - line 10:] This loop will iterate \textbf{from} $\mathbf{n-1}$ \textit{-which is an even integer-} \textbf{to} $\mathbf{1}$ by halving at each iteration. For the sake of simplicity, lets consider $\mathbf{n-1}$ as $\mathbf{2^{z}}$ where $\mathbf{z}$ is some positive integer. It will be generalized using interpolation later.
+   
+   \begin{enumerate}[leftmargin=3cm]
+       \item[\textit{\textbf{Iteration 1 -}}] ${k = 2^{z}}$
+       \item[\textit{\textbf{Iteration 2 -}}] ${k = 2^{z-1}}$
+       \item[\textit{\textbf{Iteration 3 -}}] ${k = 2^{z-2}}$
+       \item[]\hspace{-1.5cm}\textbf{\vdots}\hspace{2cm}\textbf{\vdots}
+       \item[\textit{\textbf{Iteration m -}}] ${k = 2^{z-m-1} = 1}$
+   \end{enumerate}
+   
+   As seen above, the loop will iterate $\mathbf{m}$ times. Solving the equation $\mathbf{2^{z-m-1} = 1}$ for $\mathbf{m}$ we get $\mathbf{m = z - 1}$. Substituting $\mathbf{z = log(n-1)}$ into the equation we get $\mathbf{m = log(n-1) - 1}$. Thus, the loop will have $\mathbf{log(n-1) - 1}$ iterations. Each iteration has $\mathbf{1}$ basic operation. So, the complexity comes out to be $\mathbf{f_{10-12}(n,k) = log(n-1) - 1}$. \par
+   The final complexity is only valid for $\mathbf{n = 2^{z} + 1}$. This function can be squeezed its way into the $\mathbf{\Theta (n log n)}$ complexity class. $\mathbf{n log n}$ is both $\Theta$-invariant under scaling and eventually non-decreasing. $\mathbf{f_{10-12}(n,k)}$ is eventually non-decreasing. These are enough to interpolate the complexity function so that it is valid for all natural number values of $\mathbf{n}$.
+   
+   \item[for loop 3 - line 9:] This loop will iterate \textbf{from} $\mathbf{0}$ \textbf{to} $\mathbf{n-1}$, which is $\mathbf{n}$ iterations. Each iteration will run the program from lines 10 to 12. That part of the program  has a complexity of $\mathbf{f_{10-12}(n,k) = log(n-1) - 1}$. Thus, each iteration will have $\mathbf{log(n-1) - 1}$ basic operations. So the complexity comes out to be $\mathbf{f_{9-13}(n,k) = n \cdot log(n-1) - n}$
+   
+   \item[for loop 4 - line 15:] This loop will iterate \textbf{from} $\mathbf{0}$ \textbf{to} $\mathbf{n-1}$, which is $\mathbf{n}$ iterations. Each iteration has $\mathbf{1}$ basic operation. So the complexity comes out to be $\mathbf{f_{15-17}(n,k) = n}$
+\end{description}
+
+\goodbreak
+The $anonymous$ function has three different conditional branches to enter based on the value $\mathbf{k}$. It does not have any more operations to execute after the termination of each branch. So the complexity of the function depends on which branch it enters. 
+
+\begin{description}
+    \item[conditional branch 1 - line 4:] This branch just executes \textbf{for loop 1} and exits. So the complexity of this branch is the same as the complexity of \textbf{for loop 1}, which is $\mathbf{n \cdot 2^{n}}$
+    
+    \item[conditional branch 2 - line 8:] This branch has two nested for loops, then it exits. In this case since the outer for loop takes the inner for loops complexity into account, just considering the complexity of the outer for loop is enough. So the complexity of this branch comes out to be $\mathbf{n \cdot log(n-1) - n}$.
+    
+    \item[conditional branch 3 - line 14:] This branch just executes \textbf{for loop 4} and exits. So the complexity of this branch is the same as the complexity of \textbf{for loop 4}, which is $\mathbf{n}$.
+\end{description}
+
+
+\goodbreak
+\subsection*{Worst Case}
+The worst case behaviour of this function happens when $\mathbf{k = \lceil n/2\rceil}$. Then the function will enter the branch with the highest complexity, which is $\mathbf{n \cdot 2^{n}}$. 
+
+\begin{align*}
+W(n,k) &= n \cdot 2^{n} \le n \cdot 2^{n} &\\
+ &\implies W(n,k) \in \mathcal{O}(n2^{n}) &\\
+W(n,k) &= n \cdot 2^{n} \ge n \cdot 2^{n} &\\
+ &\implies W(n,k) \in \Omega(n2^{n}) &\\
+ W(n,k) \in \Omega(n2^{n}) \land W(n,k) \in \mathcal{O}(n2^{n}) &\implies \mathbf{W(n,k) \boldsymbol{\in} \Theta(n2^{n})} &\\
+ & &\Box
+\end{align*}
+
+\goodbreak
+\subsection*{Average Case}
+Assume that the probability of $\mathbf{k = \lceil n/2\rceil}$ is $\boldsymbol{\rho}$. $\mathbf{k}$ can have $\mathbf{n}$ different equally likely values and $\boldsymbol{\rho}$ happens for only one value of $\mathbf{k}$. Thus, $\mathbf{\boldsymbol{\rho} = \frac{1}{n}}$. Since $\mathbf{n}$ is an odd integer, $\mathbf{\lceil n-1\rceil}$ value equally divides the range of possible $\mathbf{k}$ values in half \textit{- $\mathit{k = \lceil n/2\rceil}$ is omitted from the two halves}. So $\mathbf{k}$ has equal probability of ending up in each half, which is $\mathbf{\frac{1 - \boldsymbol{\rho}}{2}}$ or $\mathbf{\frac{n - 1}{2n}}$. \par
+This makes the set $\mathbf{T_{n,k}}$ have 3 elements. Which each mapping out to one of the three conditional branches the function might enter. 
+
+\begin{enumerate}[leftmargin=2.6cm]
+    \item[\textit{\textbf{$I_{1}$ - }}] $\rho (\mathit{I_{1}}) = \frac{1}{n}$ ,  $\tau (\mathit{I_{1}}) = n \cdot 2^{n}$
+    \item[\textit{\textbf{$I_{2}$ - }}] $\rho (\mathit{I_{2}}) = \frac{n-1}{2n}$ ,  $\tau (\mathit{I_{2}}) = n \cdot log(n-1) - n$
+    \item[\textit{\textbf{$I_{3}$ - }}] $\rho (\mathit{I_{3}}) = \frac{n-1}{2n}$ ,  $\tau (\mathit{I_{3}}) = n$
+\end{enumerate}
+
+\begin{align*}
+A(n,k) &= \displaystyle\sum _{I \in T_{n,k}} \tau (I) \cdot \rho (I) &&\\
+ &= (n \cdot 2^{n}) \cdot \frac{1}{n} + (n \cdot log(n-1) - n) \cdot \left( \frac{n-1}{2n}\right) + n \cdot \left(\frac{n-1}{2n}\right) && \\
+ &= 2^{n} + \frac{1}{2} \cdot n \cdot log(n - 1) - \frac{1}{2} \cdot log(n - 1) && \\ 
+ &\textit{Some positive constants $\mathbf{c_{1}}$, $\mathbf{c_{2}}$ and $\mathbf{n_{0}}$ can be found such that} && \\ 
+ &\textit{$\mathbf{A(n,k)}$ is squeezed by the function above when $\mathbf{n > n_{0}}$.} && \\
+ &\implies A(n,k) \in \Theta (2^{n} + \frac{1}{2} \cdot n \cdot log(n - 1) - \frac{1}{2} \cdot log(n - 1)) && \\
+ &\textit{Terms of lower order -$\mathbf{n \cdot log (n)}$ and $\mathbf{log (n)}$- can be omitted from the complexity class.} && \\
+ &\implies \mathbf{A(n,k) \boldsymbol{\in} \Theta (2^{n})} && \\
+ & &&\Box
+\end{align*}
+
+
+\end{document}
+
