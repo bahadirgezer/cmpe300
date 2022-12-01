@@ -51,11 +51,6 @@ if __name__ == "__main__":
     # n: int = 100
     input_sizes: list[int] = [1, 5, 10, 25, 50, 75, 100, 150, 200, 250]
     for input_case in InputCase:
-        if input_case == InputCase.best:
-            continue
-        if input_case == InputCase.worst:
-            continue
-
         for n in input_sizes:
             if input_case == InputCase.average:
                 total_time: float = 0
