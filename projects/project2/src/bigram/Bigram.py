@@ -7,8 +7,10 @@ class Master:
         self.test_file = None
         self.input_file = None
         self.data: list[list[str]] = []
+        self.tests: list[str] = []
         self.parse_args(argv)
         self.divide_work(self.parse_corpus(), size)
+        self.parse_test()
 
     def parse_args(self, argv):
         for i in range(len(sys.argv)):
@@ -44,3 +46,10 @@ class Master:
             self.data[i].append(work[-1 - i])
         return self.data
 
+    def parse_test(self):
+        with open(self.test_file, "r") as f:
+            # split and strip the test file line by line
+            lines = [line.strip() for line in f.readlines()]
+            for line in lines:
+                self.tests.append(" ".join(line.split()))
+        return self.tests
