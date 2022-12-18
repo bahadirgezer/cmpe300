@@ -1,3 +1,11 @@
+"""
+    Student Name: Bahadır Gezer / Muhammet Batuhan Ilhan
+    Student Number: 2020400039 / 2019400243
+    Compile Status: Compiling
+    Program Status: Working
+    Notes: The program is working as expected.
+        Just run the mpiexec command with the given arguments inside the src/ folder.
+"""
 from mpi4py import MPI
 import sys
 
