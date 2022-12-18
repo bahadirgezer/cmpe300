@@ -4,7 +4,7 @@
     Compile Status: Compiling
     Program Status: Working
     Notes: The program is working as expected.
-        Just run the mpiexec command with the given arguments inside the src/ folder.
+        Just run the mpiexec command using main.py with the required arguments inside the src/ folder.
 """
 from mpi4py import MPI
 import sys
