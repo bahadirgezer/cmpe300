@@ -8,11 +8,13 @@ class Master:
         self.input_file = None
         self.data: list[list[str]] = []
         self.tests: list[str] = []
+        self.freqs: dict = dict()
         self.parse_args(argv)
         self.divide_work(self.parse_corpus(), size)
         self.parse_test()
 
     def parse_args(self, argv):
+        # flag arguments can be in any order
         for i in range(len(sys.argv)):
             if argv[i] == "--test_file":
                 self.test_file = sys.argv[i + 1]
@@ -31,11 +33,8 @@ class Master:
         return corpus
 
     def divide_work(self, work: list[str], workers: int) -> list[list[str]]:
-        # divide the work evenly among the workers, if there are any left over, distribute them evenly (one at a time)
-        # until all work is distributed
-        # return a list where the work is divided among the workers, each worker has a list of work
-        # e.g. [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-        # e.g. [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11]] leftovers are distributed evenly
+        # divide the work equally among the workers,
+        # if there are any left over, distribute them one at a time until all work is distributed
         work_per_worker: int = len(work) // workers
         for i in range(workers):
             start = i * work_per_worker
@@ -53,3 +52,38 @@ class Master:
             for line in lines:
                 self.tests.append(" ".join(line.split()))
         return self.tests
+
+    def display_results(self):
+        # for each test
+        for test in self.tests:
+            freq_first_word: int = self.freqs.get(test.split()[0], 0)
+            freq_test: int = self.freqs.get(test, 0)
+            if freq_first_word == 0:
+                print(f"{test} -> {0}")
+            else:
+                # probability of the bigram
+                prob: float = freq_test / freq_first_word
+                # format the probability to 4 decimal places
+                print(f"{test} -> {format(prob, '.4f')}")
+
+
+class Slave:
+    def __init__(self, rank: int, work: list[str]):
+        self.rank: int = rank
+        self.work: list[str] = work
+        self.freqs: dict = dict()
+        print(f"Rank: {rank}, Sentences: {len(work)}")
+
+    def count_ngrams(self) -> dict:
+        # count the ngrams
+        for sentence in self.work:  # unigrams
+            for word in sentence.split():
+                self.freqs[word] = self.freqs.get(word, 0) + 1
+
+        for sentence in self.work:  # bigrams
+            words = sentence.split()
+            for i in range(len(words) - 1):
+                bigram = words[i] + " " + words[i + 1]
+                self.freqs[bigram] = self.freqs.get(bigram, 0) + 1
+
+        return self.freqs

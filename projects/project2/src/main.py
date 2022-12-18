@@ -1,84 +1,75 @@
 from mpi4py import MPI
 import sys
 
-from mpi4py.MPI import Request
+from master_slave.Model import Master, Slave
 
-from bigram.Bigram import Master
+'''
+    Use the mpi framework to distribute the work across multiple workers. It will be a master salve architecture.
+    The master will be responsible for reading the csv file and distributing the work to the slaves. 
+    The slaves will be responsible for counting the bigrams and returning the results to the master.
+    The master will then merge the results and return the final result to the user.
+'''
 
 
-# mpiexec -n 4 python main.py --input_file ../resources/sample_text.txt --merge_method MASTER --test_file ../resources/test.txt
 def main() -> None:
-    # use the mpi framework to distribute the work across multiple workers. It will be a master salve architecture.
-    # The master will be responsible for reading the csv file and distributing the work to the slaves.
     comm: MPI.Intracomm = MPI.COMM_WORLD
-    rank: int = comm.rank
+
+    # the master will be rank 0, so we need to subtract 1 from the size to get the number of workers
     size = comm.size
-    freqs: dict = dict()
+    rank: int = comm.rank
     master: Master = Master(sys.argv, size - 1)
 
     if rank == 0:
-        # the master will be rank 0, so we need to subtract 1 from the size
-
+        # master
+        # send the distributed data to the workers
         for worker in range(1, size):
             comm.send(master.data[worker - 1], dest=worker)
-        # comm.barrier()
 
-        # the master will be rank 0, so we need to subtract 1 from the size
+        # receive the results from the workers based on the merge method
         if master.merge_method == "MASTER":
+            # merge the results on the master
             for worker in range(1, size):
                 calculated: dict = comm.recv(source=worker)
-                freqs = {k: freqs.get(k, 0) + calculated.get(k, 0) for k in set(freqs).union(calculated)}
-
+                master.freqs = {k: master.freqs.get(k, 0) + calculated.get(k, 0)
+                                for k in set(master.freqs).union(calculated)}
+        # master will merge the result from the last worker
         elif master.merge_method == "WORKERS":
             calculated: dict = comm.recv(source=size - 1)
-            freqs = {k: freqs.get(k, 0) + calculated.get(k, 0) for k in set(freqs).union(calculated)}
+            master.freqs = {k: master.freqs.get(k, 0) + calculated.get(k, 0)
+                            for k in set(master.freqs).union(calculated)}
+        else:
+            raise ValueError("Invalid merge method.")
 
-        # print the largest 20 values in the dictionary with the key and value pair in a sorted order
-        print(sorted(freqs.items(), key=lambda x: x[1], reverse=True)[:20])
-
-        for test in master.tests:
-            # conditional probability of the test, which is a bigram
-            freq_first_word: int = freqs.get(test.split()[0], 0)
-            freq_test: int = freqs.get(test, 0)
-            if freq_first_word == 0:
-                print(f"{test} -> {0}")
-            else:
-                # format the probability to 4 decimal places
-                print(f"{test} -> {format(freq_test / freq_first_word, '.4f')}")
+        # display the results
+        master.display_results()
 
     else:
         # slaves
+        # receive the data from the master
         work: list[str] = comm.recv(source=0)
-        print(f"Rank: {rank}, Sentences: {len(work)}")
+        slave: Slave = Slave(rank, work)
+        slave.count_ngrams()
 
-        for sentence in work:  # unigrams
-            for word in sentence.split():
-                freqs[word] = freqs.get(word, 0) + 1
-
-        for sentence in work:  # bigrams
-            words = sentence.split()
-            for i in range(len(words) - 1):
-                bigram = words[i] + " " + words[i + 1]
-                freqs[bigram] = freqs.get(bigram, 0) + 1
-
+        # send the results back to the master based on the merge method
         if master.merge_method == "MASTER":
-            comm.send(freqs, dest=0)
-
+            # send the result to the master directly
+            comm.send(slave.freqs, dest=0)
         elif master.merge_method == "WORKERS":
-            # receive data from previous worker
-            calculated: dict = dict()  # empty dict for the first worker
+            # receive the result from the last worker, merge the results and send it to the master
+            # the first worker does not receive anything
             if rank != 1:
                 calculated: dict = comm.recv(source=rank - 1)
-                freqs = {k: freqs.get(k, 0) + calculated.get(k, 0) for k in set(freqs).union(calculated)}
+                slave.freqs = {k: slave.freqs.get(k, 0) + calculated.get(k, 0) for k in
+                               set(slave.freqs).union(calculated)}
+            # last worker sends the result to the master
             dest_rank = rank + 1 if rank + 1 < size else 0
-            comm.send(freqs, dest=dest_rank)
-
+            comm.send(slave.freqs, dest=dest_rank)
         else:
             raise ValueError("Invalid merge method.")
 
     return None
 
 
+# mpiexec -n 4 python main.py --input_file ../resources/sample_text.txt --merge_method MASTER --test_file ../resources/test.txt
 if __name__ == '__main__':
     main()
-
