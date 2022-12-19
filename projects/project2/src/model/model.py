@@ -10,10 +10,10 @@ import sys
 
 
 class Master:
-    def __init__(self, argv, size: int):
-        self.merge_method = None
-        self.test_file = None
-        self.input_file = None
+    def __init__(self, argv: list[str], size: int):
+        self.merge_method: str = ""
+        self.test_file: str = ""
+        self.input_file: str = ""
         self.data: list[list[str]] = []
         self.tests: list[str] = []
         self.freqs: dict = dict()
@@ -21,7 +21,7 @@ class Master:
         self.divide_work(self.parse_corpus(), size)
         self.parse_test()
 
-    def parse_args(self, argv):
+    def parse_args(self, argv: list[str]) -> None:
         # flag arguments can be in any order
         for i in range(len(sys.argv)):
             if argv[i] == "--test_file":
@@ -35,7 +35,7 @@ class Master:
             # raise an error for missing arguments
             raise ValueError("Missing program arguments.")
 
-    def parse_corpus(self):
+    def parse_corpus(self) -> list[str]:
         with open(self.input_file, "r") as f:
             corpus: list[str] = f.readlines()
         return corpus
@@ -53,7 +53,7 @@ class Master:
             self.data[i].append(work[-1 - i])
         return self.data
 
-    def parse_test(self):
+    def parse_test(self) -> list[str]:
         with open(self.test_file, "r") as f:
             # split and strip the test file line by line
             lines = [line.strip() for line in f.readlines()]
@@ -61,7 +61,7 @@ class Master:
                 self.tests.append(" ".join(line.split()))
         return self.tests
 
-    def display_results(self):
+    def display_results(self) -> None:
         # for each test
         for test in self.tests:
             freq_first_word: int = self.freqs.get(test.split()[0], 0)
@@ -73,6 +73,10 @@ class Master:
                 prob: float = freq_test / freq_first_word
                 # format the probability to 4 decimal places
                 print(f"{test} -> {format(prob, '.4f')}")
+
+    def merge(self, calculated_ngrams: dict) -> None:
+        self.freqs = {k: self.freqs.get(k, 0) + calculated_ngrams.get(k, 0)
+                      for k in set(self.freqs).union(calculated_ngrams)}
 
 
 class Slave:
@@ -87,11 +91,21 @@ class Slave:
         for sentence in self.work:  # unigrams
             for word in sentence.split():
                 self.freqs[word] = self.freqs.get(word, 0) + 1
-
         for sentence in self.work:  # bigrams
             words = sentence.split()
             for i in range(len(words) - 1):
                 bigram = words[i] + " " + words[i + 1]
                 self.freqs[bigram] = self.freqs.get(bigram, 0) + 1
-
         return self.freqs
+
+    def merge(self, calculated_ngrams: dict) -> None:
+        self.freqs = {k: self.freqs.get(k, 0) + calculated_ngrams.get(k, 0)
+                      for k in set(self.freqs).union(calculated_ngrams)}
+
+
+def merge_method(argv: list[str]) -> str:
+    # return the merge method
+    for i in range(len(sys.argv)):
+        if argv[i] == "--merge_method":
+            return sys.argv[i + 1]
+    raise ValueError("Missing program arguments.")
