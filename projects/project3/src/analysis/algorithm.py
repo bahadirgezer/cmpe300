@@ -6,7 +6,7 @@ the first element of the list. This is the algorithm “Quicksort (2nd version)�
 deterministic algorithm. The pivot is chosen according to the “median of three” rule. """
 import random
 from enum import IntEnum
-from typing import Callable
+from typing import Callable, List
 
 
 # enum for version where the version are 1, 2, 3, 4
@@ -20,10 +20,10 @@ class AlgorithmVersion(IntEnum):
 
 class Algorithm:
 
-    def __init__(self, version: AlgorithmVersion, data: list[int]):
+    def __init__(self, version: AlgorithmVersion, data: List[int]):
         self.version: AlgorithmVersion = version
-        self.data: list[int] = data
-        self.partitions: list[Callable] = [Algorithm.partition1, Algorithm.partition2,
+        self.data: List[int] = data
+        self.partitions: List[Callable] = [Algorithm.partition1, Algorithm.partition2,
                                            Algorithm.partition3, Algorithm.partition4]
 
     def run(self) -> None:  # run the algorithm
@@ -66,6 +66,6 @@ class Algorithm:
         “median of three” rule. """
         return 0
 
-    def reset(self, data: list[int]) -> None:
+    def reset(self, data: List[int]) -> None:
         """This method is used to reset the data. """
         self.data = data

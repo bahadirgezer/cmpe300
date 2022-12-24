@@ -1,7 +1,7 @@
 """In this project, you will implement various versions of the Quick Sort algorithm, execute these algorithms with
 different complexity cases and data sizes, report your results as execution times, and make comments on the results. """
 from enum import IntEnum
-from typing import Callable
+from typing import Callable, List
 from time import perf_counter
 
 from analysis.algorithm import AlgorithmVersion, Algorithm
@@ -22,7 +22,7 @@ class Executor:
         self.case: CaseType = case
         self.input_type: InputType = input_type
         self.data_size: int = data_size
-        self.cases: list[Callable] = [Executor.average_case, Executor.worst_case]
+        self.cases: List[Callable] = [Executor.average_case, Executor.worst_case]
         self.input: Input = Input(self.input_type, self.data_size)
         self.algorithm: Algorithm = Algorithm(version, self.input.data.copy())
 
