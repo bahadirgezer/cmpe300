@@ -10,8 +10,7 @@ import sys
 
 from mpi4py import MPI
 
-from model.model import Master, Slave
-import model.model
+import model.model as model
 
 '''
     Use the mpi framework to distribute the work across multiple workers. It will be a master salve architecture.
@@ -26,21 +25,21 @@ def main() -> None:
     # the master will be rank 0, so we need to subtract 1 from the size to get the number of workers
     size: int = comm.size
     rank: int = comm.rank
-    merge_method: str = model.model.merge_method(sys.argv)
+    merge_method: str = model.merge_method(sys.argv)
 
     if size == 1:
         raise ValueError("There must be at least one slave.")
     if rank == 0:
         # master
-        master: Master = Master(sys.argv, size - 1)
+        master: model.Master = model.Master(sys.argv, size - 1)
         # send the distributed data to the workers
         for worker in range(1, size):
             comm.send(master.data[worker - 1], dest=worker)
         # receive the results from the workers based on the merge method
         if merge_method == "MASTER":
             # merge the results on the master
-            for worker in range(1, size):
-                calculated: dict = comm.recv(source=worker)
+            for _ in range(1, size):
+                calculated: dict = comm.recv()
                 master.merge(calculated)
         # master will merge the result from the last worker
         elif merge_method == "WORKERS":
@@ -54,7 +53,7 @@ def main() -> None:
         # slaves
         # receive the data from the master
         work: list[str] = comm.recv(source=0)
-        slave: Slave = Slave(rank, work)
+        slave: model.Slave = model.Slave(rank, work)
         slave.count_ngrams()
         # send the results back to the master based on the merge method
         if merge_method == "MASTER":

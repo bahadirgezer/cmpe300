@@ -51,6 +51,7 @@ class Master:
         leftovers = len(work) % workers
         for i in range(leftovers):
             self.data[i].append(work[-1 - i])
+        # print the execution time in seconds to 4 decimal places
         return self.data
 
     def parse_test(self) -> list[str]:
