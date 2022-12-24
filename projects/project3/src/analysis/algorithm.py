@@ -28,7 +28,7 @@ class Algorithm:
 
     def run(self) -> None:  # run the algorithm
         self.quick_sort(0, len(self.data) - 1)
-        self.check_if_data_sorted()
+        self.check_if_sorted()
 
     def quick_sort(self, low: int, high: int) -> None:
         """This is the quick sort algorithm. It calls the partition function and then recursively calls itself on the
@@ -55,7 +55,6 @@ class Algorithm:
     def partition3(self, low: int, high: int) -> int:
         """The randomized algorithm. The list is first randomly permuted and then the classical deterministic
         algorithm is called where the pivot is chosen as the first element of the list. """
-
         random.shuffle(self.data[low:high + 1])
         pivot = self.data[low]
         return self.make_swaps(low, high, pivot)
@@ -63,17 +62,12 @@ class Algorithm:
     def partition4(self, low: int, high: int) -> int:
         """This is the partition function for the deterministic algorithm. The pivot is chosen according to the
         “median of three” rule. """
-        values = {self.data[low]: low, self.data[(high + low) // 2]: (high + low) // 2, self.data[high]: high}
-        values_list = [self.data[low], self.data[(high + low) // 2], self.data[high]]
-        values_list.sort()
-        median=values[values_list[1]]
+        pivots = {self.data[low]: low, self.data[(high + low) // 2]: (high + low) // 2, self.data[high]: high}
+        values = sorted([self.data[low], self.data[(high + low) // 2], self.data[high]])
+        median = pivots[values[1]]  # get the median
         pivot = self.data[median]
         self.data[median], self.data[low] = self.data[low], self.data[median]
         return self.make_swaps(low, high, pivot)
-
-    def reset(self, data: List[int]) -> None:
-        """This method is used to reset the data. """
-        self.data = data
 
     def make_swaps(self, low: int, high: int, pivot: int) -> int:
         i = low + 1
@@ -84,7 +78,11 @@ class Algorithm:
         self.data[low], self.data[i - 1] = self.data[i - 1], self.data[low]  # swap pivot with last element
         return i - 1
 
-    def check_if_data_sorted(self):
+    def check_if_sorted(self):
         for i in range(1, len(self.data)):
             if self.data[i - 1] > self.data[i]:
                 raise ValueError("NOT SORTED")
+
+    def reset(self, data: List[int]) -> None:
+        """This method is used to reset the data. """
+        self.data = data

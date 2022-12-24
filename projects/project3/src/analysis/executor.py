@@ -32,8 +32,13 @@ class Executor:
         exec_time = self.cases[self.case](self)
         # print the results
         # format exec time to 3 decimal places and convert to the seconds to ms
-        return f"Version: {self.version.name},\t Case: {self.case.name},\t Input: {self.input_type.name},\t " \
-               f"Data Size: {self.data_size},\t Execution Time: {round(exec_time * 1000, 3)} ms"
+
+        return f"{round(exec_time * 1000, 3)} ms"
+
+        # return f"{self.version.name} {self.case.name} = {round(exec_time * 1000, 3)} ms"
+
+        # return f"Version: {self.version.name},\t Case: {self.case.name},\t Input: {self.input_type.name},\t " \
+        #       f"Data Size: {self.data_size},\t Execution Time: {round(exec_time * 1000, 3)} ms"
 
     def average_case(self) -> float:
         """This method is used to execute the algorithm with the average case. """
