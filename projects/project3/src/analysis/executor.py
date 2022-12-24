@@ -1,6 +1,5 @@
 """In this project, you will implement various versions of the Quick Sort algorithm, execute these algorithms with
 different complexity cases and data sizes, report your results as execution times, and make comments on the results. """
-import time
 from enum import IntEnum
 from typing import Callable
 from time import perf_counter
@@ -43,13 +42,13 @@ class Executor:
             self.algorithm.run()
             end = perf_counter()
             exec_times.append(end - start)
-            self.algorithm.reset(self.input.data.copy()) # reset the algorithm with the original data
+            self.algorithm.reset(self.input.data.copy())  # reset the algorithm with the original data
         return sum(exec_times) / len(exec_times)
 
     def worst_case(self) -> float:
         """This method is used to execute the algorithm with the worst case. """
         self.input.worst_case()
-        self.algorithm.reset(self.input.data.copy()) # reset the algorithm with the worst case data
+        self.algorithm.reset(self.input.data.copy())  # reset the algorithm with the worst case data
         start = perf_counter()
         self.algorithm.run()
         end = perf_counter()

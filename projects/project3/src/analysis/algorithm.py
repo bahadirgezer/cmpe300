@@ -4,6 +4,7 @@ randomly. This is the algorithm “Quicksort (1st version)” in the course slid
 list is first randomly permuted and then the classical deterministic algorithm is called where the pivot is chosen as
 the first element of the list. This is the algorithm “Quicksort (2nd version)” in the course slides. Ver4. The
 deterministic algorithm. The pivot is chosen according to the “median of three” rule. """
+import random
 from enum import IntEnum
 from typing import Callable
 
@@ -51,6 +52,8 @@ class Algorithm:
 
     def partition2(self, low: int, high: int) -> int:
         """This is the partition function for the randomized algorithm. The pivot is chosen randomly. """
+        pivot = random.choice(self.data[low:high + 1])
+
         return 0
 
     def partition3(self, low: int, high: int) -> int:
