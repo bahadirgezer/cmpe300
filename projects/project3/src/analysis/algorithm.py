@@ -9,7 +9,8 @@ from typing import Callable
 
 
 # enum for version where the version are 1, 2, 3, 4
-class Version(IntEnum):
+class AlgorithmVersion(IntEnum):
+    """This enum is used to specify the version of the algorithm. """
     Ver1 = 0
     Ver2 = 1
     Ver3 = 2
@@ -18,8 +19,8 @@ class Version(IntEnum):
 
 class Algorithm:
 
-    def __init__(self, version: Version, data: list[int]):
-        self.version: Version = version
+    def __init__(self, version: AlgorithmVersion, data: list[int]):
+        self.version: AlgorithmVersion = version
         self.data: list[int] = data
         self.partitions: list[Callable] = [Algorithm.partition1, Algorithm.partition2,
                                            Algorithm.partition3, Algorithm.partition4]
@@ -49,10 +50,15 @@ class Algorithm:
         return i - 1
 
     def partition2(self, low: int, high: int) -> int:
+        """This is the partition function for the randomized algorithm. The pivot is chosen randomly. """
         return 0
 
     def partition3(self, low: int, high: int) -> int:
+        """The randomized algorithm. The list is first randomly permuted and then the classical deterministic
+        algorithm is called where the pivot is chosen as the first element of the list. """
         return 0
 
     def partition4(self, low: int, high: int) -> int:
+        """This is the partition function for the deterministic algorithm. The pivot is chosen according to the
+        “median of three” rule. """
         return 0
