@@ -50,3 +50,7 @@ class Input:
     def generate_data4(self) -> list[int]:
         """This function generates the data for InpType4.  All the elements are the integer 1. """
         return [1] * self.size
+
+    def worst_case(self) -> None:
+        """This function generates the data for worst case. """
+        self.data.sort()

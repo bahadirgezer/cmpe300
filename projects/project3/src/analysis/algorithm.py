@@ -62,3 +62,7 @@ class Algorithm:
         """This is the partition function for the deterministic algorithm. The pivot is chosen according to the
         “median of three” rule. """
         return 0
+
+    def reset(self, data: list[int]) -> None:
+        """This method is used to reset the data. """
+        self.data = data

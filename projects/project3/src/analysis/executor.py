@@ -3,6 +3,7 @@ different complexity cases and data sizes, report your results as execution time
 import time
 from enum import IntEnum
 from typing import Callable
+from time import perf_counter
 
 from analysis.algorithm import AlgorithmVersion, Algorithm
 from analysis.input import InputType, Input
@@ -23,7 +24,7 @@ class Executor:
         self.data_size: int = data_size
         self.cases: list[Callable] = [Executor.average_case, Executor.worst_case]
         self.input: Input = Input(self.input_type, self.data_size)
-        self.algorithm: Algorithm = Algorithm(version, self.input.data)
+        self.algorithm: Algorithm = Algorithm(version, self.input.data.copy())
 
     def run(self) -> None:
         """This method is used to execute the algorithm with the given version, input type and analysis case . """
@@ -35,8 +36,21 @@ class Executor:
 
     def average_case(self) -> float:
         """This method is used to execute the algorithm with the average case. """
-        pass
+        # execute the algorithm 5 times and take the average
+        exec_times = []
+        for _ in range(5):
+            start = perf_counter()
+            self.algorithm.run()
+            end = perf_counter()
+            exec_times.append(end - start)
+            self.algorithm.reset(self.input.data.copy()) # reset the algorithm with the original data
+        return sum(exec_times) / len(exec_times)
 
     def worst_case(self) -> float:
         """This method is used to execute the algorithm with the worst case. """
-        pass
+        self.input.worst_case()
+        self.algorithm.reset(self.input.data.copy()) # reset the algorithm with the worst case data
+        start = perf_counter()
+        self.algorithm.run()
+        end = perf_counter()
+        return end - start
