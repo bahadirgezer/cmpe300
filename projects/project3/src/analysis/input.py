@@ -30,7 +30,7 @@ class Input:
 
     def generate_data(self) -> None:
         """This function generates the data based on the input type. """
-        self.data = self.input_types[self.input_type]()
+        self.data = self.input_types[self.input_type](self)
 
     def generate_data1(self) -> list[int]:
         """This function generates the data for InpType1. Each element of the list is an integer between 1 and 10*n.

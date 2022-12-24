@@ -34,7 +34,7 @@ class Algorithm:
         two sublist. """
         if low < high:
             # choose partition function based on version
-            pivot = self.partitions[self.version](low, high)
+            pivot = self.partitions[self.version](self, low, high)
             self.quick_sort(low, pivot - 1)  # left
             self.quick_sort(pivot + 1, high)  # right
 

@@ -29,10 +29,11 @@ class Executor:
     def run(self) -> str:
         """This method is used to execute the algorithm with the given version, input type and analysis case . """
         # time the algorithm
-        exec_time = self.cases[self.case]()
+        exec_time = self.cases[self.case](self)
         # print the results
-        return f"Algorithm: {self.version.name}, Case: {self.case.name}, Input: {self.input_type.name}, " \
-               f"Size: {self.data_size}, Time: {exec_time}"
+        # format exec time to 3 decimal places and convert to the seconds to ms
+        return f"Version: {self.version.name},\t Case: {self.case.name},\t Input: {self.input_type.name},\t " \
+               f"Data Size: {self.data_size},\t Execution Time: {round(exec_time * 1000, 3)} ms"
 
     def average_case(self) -> float:
         """This method is used to execute the algorithm with the average case. """
