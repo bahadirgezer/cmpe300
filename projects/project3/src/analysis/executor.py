@@ -16,6 +16,7 @@ class CaseType(IntEnum):
 
 class Executor:
     """This class is used to execute the algorithm. """
+
     def __init__(self, version: AlgorithmVersion, case: CaseType, input_type: InputType, data_size: int):
         self.version: AlgorithmVersion = version
         self.case: CaseType = case
@@ -25,13 +26,13 @@ class Executor:
         self.input: Input = Input(self.input_type, self.data_size)
         self.algorithm: Algorithm = Algorithm(version, self.input.data.copy())
 
-    def run(self) -> None:
+    def run(self) -> str:
         """This method is used to execute the algorithm with the given version, input type and analysis case . """
         # time the algorithm
         exec_time = self.cases[self.case]()
         # print the results
-        print(f"Algorithm: {self.version.name}, Case: {self.case.name}, Input: {self.input_type.name}, "
-              f"Size: {self.data_size}, Time: {exec_time}")
+        return f"Algorithm: {self.version.name}, Case: {self.case.name}, Input: {self.input_type.name}, " \
+               f"Size: {self.data_size}, Time: {exec_time}"
 
     def average_case(self) -> float:
         """This method is used to execute the algorithm with the average case. """
