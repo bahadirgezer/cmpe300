@@ -1,2 +1,0 @@
-"""In this project, you will implement various versions of the Quick Sort algorithm, execute these algorithms with
-different complexity cases and data sizes, report your results as execution times, and make comments on the results. """
