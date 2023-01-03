@@ -27,6 +27,8 @@ class Algorithm:
                                            Algorithm.partition3, Algorithm.partition4]
 
     def run(self) -> None:  # run the algorithm
+        if self.version == 2:
+            random.shuffle(self.data)
         self.quick_sort(0, len(self.data) - 1)
         self.check_if_sorted()
 
@@ -55,7 +57,6 @@ class Algorithm:
     def partition3(self, low: int, high: int) -> int:
         """The randomized algorithm. The list is first randomly permuted and then the classical deterministic
         algorithm is called where the pivot is chosen as the first element of the list. """
-        random.shuffle(self.data[low:high + 1])
         pivot = self.data[low]
         return self.make_swaps(low, high, pivot)
 
